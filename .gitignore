@@ -1,0 +1,8 @@
+._*
+.~lock.*
+.buildpath
+.DS_Store
+.project
+.settings
+**/.vagrant
+**/.project
