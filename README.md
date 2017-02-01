@@ -43,7 +43,9 @@ cur_datetime=$(date +"%Y-%m-%d_%H-%M-%S");
 cur_timestamp=$(date +"%s");
 echo "current time = $cur_datetime" >> /tmp/test.txt
 cat /tmp/test.txt
-sudo cat /var/log/osquery/osqueryd.results.log | grep "test.txt" | jq '.'
+cat /var/log/osquery/osqueryd.results.log | grep 'test.txt' | jq '.'
+    OR
+watch -n 1 "cat /var/log/osquery/osqueryd.results.log | grep 'test.txt' | jq '.' | tail -n 32"
 ```
 
 
