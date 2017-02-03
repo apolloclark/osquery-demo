@@ -7,7 +7,6 @@ export DEBIAN_FRONTEND="noninteractive"
 
 # install system tools
 apt-get update
-apt-get -y upgrade
 apt-get install -y jq
 
 
@@ -23,11 +22,13 @@ apt-get install -y osquery
 osqueryd --version
 
 # configure osquery
-cp /vagrant/provision/osquery.conf \
-    /etc/osquery/osquery.conf
-service osqueryd start
+cp /vagrant/provision/osquery.conf /etc/osquery/osquery.conf
+service osqueryd restart
 service osqueryd status
 
+# configure the inode file listeners
+cp /vagrant/provision/sysctl.conf /etc/sysctl.conf
+sysctl -p
 
 
 
