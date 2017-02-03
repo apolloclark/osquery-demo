@@ -11,11 +11,23 @@ https://www.sitepoint.com/osquery-explore-os-sql/#5-using-osquery
 
 ```shell
 git clone <repo_url>
-cd osquery-demo
+cd osquery-demo/standalone
 vagrant up ubuntu14
 vagrant ssh ubuntu14
 
-# inside the VM
+
+
+# configure ELK dashboard
+
+# go to the Discover table, type this in the search bar:
+# https://www.timroes.de/2016/05/29/elasticsearch-kibana-queries-in-depth-tutorial/
+type: "osquery_json"
+
+name:"file_events" AND columns.action:"UPDATED"
+
+
+
+
 
 # run a query, output as json
 osqueryi --json "select * from routes"
@@ -31,21 +43,26 @@ osqueryd --config_check /vagrant/provision/osquery.conf
 
 
 
-
-
 # install a LAMP stack
 sudo /vagrant/provision/ubuntu14-lamp.sh
+
+
 
 # test the file integrity monitoring (FIM)
 # you cannot use the osqueryi interactive shell
 # https://github.com/facebook/osquery/issues/2826#issuecomment-268798859
 cur_datetime=$(date +"%Y-%m-%d_%H-%M-%S");
 cur_timestamp=$(date +"%s");
+touch /tmp/test.txt
+chmod 0777 /tmp/test.txt
 echo "current time = $cur_datetime" >> /tmp/test.txt
 cat /tmp/test.txt
 cat /var/log/osquery/osqueryd.results.log | grep 'test.txt' | jq '.'
+cat /var/log/osquery/osqueryd.results.log | grep 'test.txt' | jq '.' | grep 'md5'
     OR
 watch -n 1 "cat /var/log/osquery/osqueryd.results.log | grep 'test.txt' | jq '.' | tail -n 32"
+    OR
+osqueryi --json "SELECT * from hash where path = '/tmp/test.txt'" | jq '.'
 ```
 
 
@@ -57,6 +74,25 @@ watch -n 1 "cat /var/log/osquery/osqueryd.results.log | grep 'test.txt' | jq '.'
 /var/log/osquery/osqueryd.INFO
 nano /var/log/osquery/osqueryd.results.log
 cat /var/log/osquery/osqueryd.results.log | jq '.'
+
+# filebeat
+/var/log/filebeat/filebeat.log
+
+# logstash
+/var/log/logstash/logstash.log
+/var/log/logstash/logstash.stdout
+/var/log/logstash/logstash.err
+
+# elasticsearch
+/var/log/elasticsearch/elasticsearch.log
+/var/log/elasticsearch/elasticsearch_index_search_slowlog.log
+/var/log/elasticsearch/elasticsearch_index_search_slowlog.log
+/var/log/elasticsearch/elasticsearch_deprecation.log
+
+# kibana
+/var/log/kibana/kibana.stdout
+/var/log/kibana/kibana.stderr
+```
 ```
 
 
@@ -132,23 +168,25 @@ SELECT p.pid, u.username, g.groupname, p.name, p.cmdline
     ORDER BY start_time ASC;
 
     
-    
+
+# list all listening ports
+SELECT * FROM listening_ports;
+
 # list all running process that are publicly listening
 SELECT DISTINCT p.name, l.port, p.pid
     FROM processes p
     JOIN listening_ports l ON p.pid = l.pid
-    WHERE listening.address = '0.0.0.0';
+    WHERE l.address = '0.0.0.0';
     
 SELECT p.name, l.port, p.pid
     FROM processes p
     JOIN listening_ports l ON p.pid = l.pid
-    WHERE listening.address = '0.0.0.0';
+    WHERE l.address = '0.0.0.0';
 
 	
 	
 # list all installed packages - name, version, revision
-SELECT name, version, revision
-	FROM deb_packages;
+SELECT name, version, revision FROM deb_packages;
 
 # list all python packages - name, version, revision
 SELECT name, version,revision 
