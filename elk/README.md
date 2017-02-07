@@ -12,6 +12,14 @@ vagrant up ubuntu14
 vagrant ssh ubuntu14
 
 # configure ELK dashboard
+# http://127.0.0.1:5601
+
+# under "Index Patterns", click "filebeat-*"
+# click the green star, setting the default pattern
+
+# click "Discover", in the top menu
+# click drop-down in left-side menu, select "filebeat-*"
+
 
 # go to the Discover table, type this in the search bar:
 # https://www.timroes.de/2016/05/29/elasticsearch-kibana-queries-in-depth-tutorial/
