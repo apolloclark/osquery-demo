@@ -58,10 +58,8 @@ update-rc.d logstash defaults 96 9
 # @see https://www.elastic.co/guide/en/kibana/4.6/setup-repositories.html
 echo "[INFO] Installing Kibana..."
 echo 'deb http://packages.elastic.co/kibana/4.6/debian stable main' | sudo tee -a /etc/apt/sources.list.d/kibana-4.6.x.list
-# echo 'deb http://packages.elastic.co/kibana/3.0/debian stable main' | sudo tee -a /etc/apt/sources.list.d/kibana-3.0.x.list
 apt-get update
 apt-get install -y kibana=4.6.3
-# apt-get install -y kibana=3.1.3
 service kibana start
 update-rc.d kibana defaults 96 9
 
@@ -96,11 +94,6 @@ cd ~
 curl -O -s https://gist.githubusercontent.com/thisismitch/3429023e8438cc25b86c/raw/d8c479e2a1adcea8b1fe86570e42abab0f10f364/filebeat-index-template.json
 curl -XPUT -s 'http://localhost:9200/_template/filebeat?pretty' -d@filebeat-index-template.json
 # verify the output is {"acknowledged" : true}
-
-
-
-
-
 
 
 

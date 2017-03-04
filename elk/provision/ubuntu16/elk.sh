@@ -41,7 +41,7 @@ update-rc.d elasticsearch defaults 95 10
 
 
 
-# install Logtasth
+# install Logstash
 # @see https://www.elastic.co/guide/en/logstash/2.4/installing-logstash.html
 echo "[INFO] Installing Logstash..."
 echo 'deb http://packages.elastic.co/logstash/2.4/debian stable main' | sudo tee /etc/apt/sources.list.d/logstash-2.2.x.list
@@ -67,24 +67,6 @@ update-rc.d kibana defaults 96 9
 
 
 
-# install the Beats dashboard
-# https://github.com/elastic/beats-dashboards/releases 1.3.1
-cd ~
-curl -L -O -s https://download.elastic.co/beats/dashboards/beats-dashboards-1.1.0.zip
-unzip -q beats-dashboards-*.zip
-cd beats-dashboards-*
-./load.sh > /dev/null 2>&1
-
-# install the Filebeat template
-cd ~
-curl -O -s https://gist.githubusercontent.com/thisismitch/3429023e8438cc25b86c/raw/d8c479e2a1adcea8b1fe86570e42abab0f10f364/filebeat-index-template.json
-curl -XPUT -s 'http://localhost:9200/_template/filebeat?pretty' -d@filebeat-index-template.json
-# verify the output is {"acknowledged" : true}
-
-
-
-
-
 # Install Filebeat
 # @see https://www.elastic.co/guide/en/beats/libbeat/1.3/setup-repositories.html
 echo "deb https://packages.elastic.co/beats/apt stable main" |  sudo tee -a /etc/apt/sources.list.d/beats.list
@@ -94,6 +76,24 @@ service filebeat start
 update-rc.d filebeat defaults 95 10
 mkdir -p /var/log/filebeat
 # curl -XGET 'http://localhost:9200/filebeat-*/_search?pretty'
+
+
+
+
+
+# install the Beats dashboard
+# https://github.com/elastic/beats-dashboards/releases 1.3.1
+cd ~
+curl -L -O -s https://download.elastic.co/beats/dashboards/beats-dashboards-1.3.1.zip
+unzip -q beats-dashboards-*.zip
+cd beats-dashboards-*
+./load.sh -url "http://localhost:9200" > /dev/null 2>&1
+
+# install the Filebeat template
+cd ~
+curl -O -s https://gist.githubusercontent.com/thisismitch/3429023e8438cc25b86c/raw/d8c479e2a1adcea8b1fe86570e42abab0f10f364/filebeat-index-template.json
+curl -XPUT -s 'http://localhost:9200/_template/filebeat?pretty' -d@filebeat-index-template.json
+# verify the output is {"acknowledged" : true}
 
 
 

@@ -1,6 +1,6 @@
 # osquery-demo
 
-This is a demo of osquery, using Vagrant.
+This is an osquery Vagrant demo.
 
 You can find a tutorial here:
 https://www.sitepoint.com/osquery-explore-os-sql/#5-using-osquery
