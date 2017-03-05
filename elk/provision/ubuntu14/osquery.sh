@@ -7,7 +7,19 @@ export DEBIAN_FRONTEND="noninteractive"
 
 # install system tools
 apt-get update
-apt-get install -y jq
+apt-get install -y jq git
+
+# enable colored Bash prompt
+cp /vagrant/.bashrc /root/.bashrc
+cp /vagrant/.bashrc /home/vagrant/.bashrc
+
+# enable more robust Nano syntax highlighting
+git clone https://github.com/scopatz/nanorc.git /root/.nano
+cat /root/.nano/nanorc >> /root/.nanorc
+git clone https://github.com/scopatz/nanorc.git /home/vagrant/.nano
+cat /home/vagrant/.nano/nanorc >> /home/vagrant/.nanorc
+
+
 
 
 
@@ -22,12 +34,12 @@ apt-get install -y osquery
 osqueryd --version
 
 # configure osquery
-cp /vagrant/provision/osquery.conf /etc/osquery/osquery.conf
+cp /vagrant/osquery/osquery.conf /etc/osquery/osquery.conf
 service osqueryd restart
 service osqueryd status
 
 # configure the inode file listeners
-cp /vagrant/provision/sysctl.conf /etc/sysctl.conf
+cp /vagrant/osquery/sysctl.conf /etc/sysctl.conf
 sysctl -p
 
 

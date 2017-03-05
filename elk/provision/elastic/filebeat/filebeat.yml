@@ -14,8 +14,8 @@ filebeat:
       paths:
         - /var/log/auth.log
         - /var/logsyslog
-        - /var/log/*.log
-        #- c:\programdata\elasticsearch\logs\*
+        # - /var/log/*.log
+        # - c:\programdata\elasticsearch\logs\*
 
       # Configure the file encoding for reading files with international characters
       # following the W3C recommendation for HTML5 (http://www.w3.org/TR/encoding).
@@ -144,9 +144,16 @@ filebeat:
       #force_close_files: false
 
     # Additional prospector
-    #-
-      # Configuration to use stdin input
-      #input_type: stdin
+    -
+      # Configuration to use json input
+      input_type: json
+      paths:
+        - /var/log/osquery/osqueryd.results.log
+      document_type: osquery_json
+      fields:
+        type: osquery_json
+        codec: json
+      json.message_key: log
 
   # General filebeat configuration options
   #

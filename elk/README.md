@@ -11,21 +11,16 @@ cd osquery-demo/standalone
 vagrant up ubuntu14
 vagrant ssh ubuntu14
 
-# configure ELK dashboard
-# http://127.0.0.1:5601
+# view ELK dashboard:
+# http://127.0.0.1:5601/app/kibana
 
-# under "Index Patterns", click "filebeat-*"
-# click the green star, setting the default pattern
-
-# click "Discover", in the top menu
-# click drop-down in left-side menu, select "filebeat-*"
-
-
-# go to the Discover table, type this in the search bar:
-# https://www.timroes.de/2016/05/29/elasticsearch-kibana-queries-in-depth-tutorial/
+# in the search bar, enter:
 type: "osquery_json"
 
+# to see only updated files, enter:
 name:"file_events" AND columns.action:"UPDATED"
+
+# https://www.timroes.de/2016/05/29/elasticsearch-kibana-queries-in-depth-tutorial/
 ```
 
 
@@ -46,8 +41,24 @@ name:"file_events" AND columns.action:"UPDATED"
 # list node state
 /_nodes/stats?pretty
 
+# list indexes
+/_cat/indices?v
+
+
 # search
 GET /_search
+
+
+
+# list Kibana settings
+GET /.kibana?pretty
+
+# list Kibana config
+GET /.kibana/config/4.6.3?pretty
+
+# check Kibana index-pattern is set to Filebeat
+GET /.kibana/index-pattern/filebeat-*
+
 ```
 
 
