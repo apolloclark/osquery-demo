@@ -6,3 +6,4 @@
 .settings
 **/.vagrant
 **/.project
+**/aws-config.yml
