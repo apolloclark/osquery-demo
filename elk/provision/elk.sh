@@ -18,6 +18,10 @@ apt-get install -y ruby2.0=2.0.0.484-1ubuntu2.2 unzip
 # install the Elastic PGP Key
 wget -qO - https://packages.elastic.co/GPG-KEY-elasticsearch | apt-key add -
 
+# install Java
+apt-get purge openjdk*
+apt-get -y install openjdk-7-jdk
+
 
 
 
@@ -25,10 +29,6 @@ wget -qO - https://packages.elastic.co/GPG-KEY-elasticsearch | apt-key add -
 # Install Elasticsearch
 # @see https://www.elastic.co/guide/en/elasticsearch/reference/2.4/setup-repositories.html
 echo "[INFO] Installing Elasticsearch..."
-
-# install Java
-apt-get purge openjdk*
-apt-get -y install openjdk-7-jdk
 
 # install Elasticsearch
 echo 'deb http://packages.elastic.co/elasticsearch/2.x/debian stable main' | \
@@ -56,20 +56,6 @@ update-rc.d logstash defaults 96 9
 
 
 
-# Install Kibana
-# @see https://www.elastic.co/guide/en/kibana/4.6/setup-repositories.html
-echo "[INFO] Installing Kibana..."
-echo 'deb http://packages.elastic.co/kibana/4.6/debian stable main' | \
-	tee -a /etc/apt/sources.list.d/kibana-4.6.x.list
-apt-get update
-apt-get install -y kibana=4.6.3
-service kibana start
-update-rc.d kibana defaults 96 9
-
-
-
-
-
 # Install Filebeat
 # @see https://www.elastic.co/guide/en/beats/libbeat/1.3/setup-repositories.html
 echo "deb https://packages.elastic.co/beats/apt stable main" | \
@@ -80,6 +66,20 @@ service filebeat start
 update-rc.d filebeat defaults 95 10
 mkdir -p /var/log/filebeat
 # curl -XGET 'http://localhost:9200/filebeat-*/_search?pretty'
+
+
+
+
+
+# Install Kibana
+# @see https://www.elastic.co/guide/en/kibana/4.6/setup-repositories.html
+echo "[INFO] Installing Kibana..."
+echo 'deb http://packages.elastic.co/kibana/4.6/debian stable main' | \
+	tee -a /etc/apt/sources.list.d/kibana-4.6.x.list
+apt-get update
+apt-get install -y kibana=4.6.3
+service kibana start
+update-rc.d kibana defaults 96 9
 
 
 

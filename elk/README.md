@@ -7,9 +7,9 @@ This is osquery, with an ElasticSearch, Logstash, Kibana ELK dashboard.
 
 ```shell
 git clone <repo_url>
-cd osquery-demo/standalone
-vagrant up ubuntu14
-vagrant ssh ubuntu14
+cd osquery-demo/elk/ubuntu16
+vagrant up
+vagrant ssh
 
 # view ELK dashboard:
 # http://127.0.0.1:5601/app/kibana
