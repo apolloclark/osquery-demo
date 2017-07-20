@@ -14,9 +14,13 @@ git clone <repo_url>
 cd osquery-demo/standalone
 vagrant up ubuntu14
 vagrant ssh ubuntu14
+```
 
 
 
+## Usage
+
+```shell
 # run a query, output as json
 osqueryi --json "select * from routes"
 
