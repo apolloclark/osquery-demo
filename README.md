@@ -12,8 +12,8 @@ https://www.sitepoint.com/osquery-explore-os-sql/#5-using-osquery
 ```shell
 git clone <repo_url>
 cd osquery-demo/standalone
-vagrant up ubuntu14
-vagrant ssh ubuntu14
+vagrant up ubuntu16
+vagrant ssh ubuntu16
 ```
 
 
